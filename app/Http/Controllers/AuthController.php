@@ -93,6 +93,10 @@ public function logout(){
 Auth::logout();
 return redirect(url('login'));
 }
+
+public function allUsers(){
+    dd(User::all());
+}
 }
 
 

@@ -28,7 +28,8 @@ class User extends Authenticatable
         'area',
         'city',
        'image',
-        'gender'
+        'gender',
+        'access_token'
 
 
     ];
