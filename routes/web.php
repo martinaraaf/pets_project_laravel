@@ -13,14 +13,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('register',[AuthController::class,'registerForm'])->name('registerForm');
-Route::post('register',[AuthController::class,'register'])->name('register');
+Route::middleware('guest')->group(
+    function(){
+        Route::get('register',[AuthController::class,'registerForm'])->name('registerForm');
+        Route::post('register',[AuthController::class,'register'])->name('register');
 
-Route::get('login',[AuthController::class,'loginForm'])->name('loginForm');
-Route::post('login',[AuthController::class,'login'])->name('login');
-
+        Route::get('login',[AuthController::class,'loginForm'])->name('loginForm');
+        Route::post('login',[AuthController::class,'login'])->name('login');
+    });
 Route::post('logout',[AuthController::class,'logout']);
 
+Route::get('users',[AuthController::class,'allUsers'])->middleware('isAdmin','auth');
 
 
 
