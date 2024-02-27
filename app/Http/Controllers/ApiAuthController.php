@@ -116,7 +116,8 @@ $user->update([
 ]);
 return response()->json([
     'msg'=>'logout succssefuly'
-        ],200);
+        ],200
+    );
 }else{
     return response()->json([
         'msg'=>'notfound'
