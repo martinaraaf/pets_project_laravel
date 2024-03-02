@@ -105,28 +105,28 @@ if($user){
 //login
 }
 
-public function logout(Request $request){
-$access_token=$request->header('access_token');
-//check hwa mogod wla la
-if($access_token!=null){
-  $user=  User::where('access_token','=',$access_token)->first();
-if($user){
-$user->update([
-    "access_token"=>null
-]);
-return response()->json([
-    'msg'=>'logout succssefuly'
-        ],200);
-}else{
-    return response()->json([
-        'msg'=>'notfound'
+    public function logout(Request $request){
+        $access_token=$request->header('access_token');
+    //check hwa mogod wla la
+        // return $access_token;
+        if($access_token!=null){
+            $user=  User::where('access_token','=',$access_token)->first();
+            if($user){
+                $user->update([
+                    "access_token"=>null
+                ]);
+                return response()->json([
+                    'msg'=>'logout succssefuly'
+                ],200);
+            }else{
+                return response()->json([
+                    'msg'=>'notfound'
+                ],404);
+            }
+        }else{
+            return response()->json([
+                'msg'=>'access token not correct'
             ],404);
-}
-
-}else{
-    return response()->json([
-        'msg'=>'access token not correct'
-            ],404);
-}
-}
+        }
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,14 @@ Route::middleware('guest')->group(
 Route::post('logout',[AuthController::class,'logout']);
 
 Route::get('users',[AuthController::class,'allUsers'])->middleware('isAdmin','auth');
+
+
+
+Route::controller(ImageController::class)->group(function(){
+    Route::get('/image-upload', 'index')->name('image.form');
+    Route::post('/upload-image', 'storeImage')->name('image.store');
+});
+
 
 
 
