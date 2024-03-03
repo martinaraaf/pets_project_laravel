@@ -33,6 +33,11 @@ class User extends Authenticatable
 
 
     ];
+    public function proudcts(){
+        return $this->hasMany(Proudct::class);
+
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

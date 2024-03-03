@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProudctController;
+use App\Http\Middleware\IsAdmin;
+use App\Models\Proudct;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +29,37 @@ Route::post('logout',[AuthController::class,'logout']);
 
 Route::get('users',[AuthController::class,'allUsers'])->middleware('isAdmin','auth');
 
+//categoeies
+//showall
+//read
+Route::get("categories",[CategoryController::class,"all"]);
+Route::get('categories/show/{id}', [CategoryController::class, 'show']);
 
+//insert
+Route::get("categories/create",[CategoryController::class,"create"]);
+Route::post("categories",[CategoryController::class,"store"]);
+//update
+Route::get("categories/edit/{id}",[CategoryController::class,"edit"]);
+Route::put("categories/{id}",[CategoryController::class,"update"]);
+//delete
+Route::delete("categories/{id}",[CategoryController::class,"delete"]);
+
+//proudcts
+Route::controller(ProudctController::class)->group(function(){
+    // Route::middleware(IsAdmin::class)->group(function(){
+    //all
+    Route::get('proudcts/all',"all")->name('allProudct');
+    Route::get('proudcts/show/{id}',"show")->name('showProudct');
+    //create
+    Route::get('proudcts/create',"create")->name('createProudct');
+    Route::post('products',"store")->name('storeProudct');
+    //edit and updatda
+    Route::get('proudcts/edit/{id}',"edit")->name('editProudct');
+    Route::put('proudcts/{id}/update',"updata")->name('updateProudct');
+    //delete
+    Route::delete('proudcts/delete/{id}',"delete");
+});
+// });
 
 Route::get('/', function () {
     return view('welcome');
