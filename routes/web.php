@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProudctController;
 use App\Http\Middleware\IsAdmin;
 use App\Models\Proudct;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,6 +61,14 @@ Route::controller(ProudctController::class)->group(function(){
     Route::delete('proudcts/delete/{id}',"delete");
 });
 // });
+
+Route::controller(ImageController::class)->group(function(){
+    Route::get('/image-upload', 'index')->name('image.form');
+    Route::post('/upload-image', 'storeImage')->name('image.store');
+});
+
+
+
 
 Route::get('/', function () {
     return view('welcome');

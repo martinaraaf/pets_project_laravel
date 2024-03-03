@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ApiAuthController;
+use App\Http\Controllers\API\ClinicController;
+// use App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +28,16 @@ Route::post('login',[ApiAuthController::class,'login']);
 Route::post('logout',[ApiAuthController::class,'logout']);
 
 
+// APIs for clinics
+Route::controller(ClinicController::class)->prefix('/clinics')->group(function(){
+    // Get all clinics
+    // http://127.0.0.1:8000/api/clinics
+    Route::get('/', 'index');
+    // Search clinics
+    // http://127.0.0.1:8000/api/clinics/search
+    Route::get('/search', 'search');
+
+    // Get a clinic by ID (optional)
+    // http://127.0.0.1:8000/api/clinics/1
+    Route::get('/{id}', 'show');
+});

@@ -36,6 +36,12 @@ $imagePath = null;
 if ($request->hasFile('image')) {
     $imagePath = $request->file('image')->store('images');
 }
+///////////////////
+// $imgName = time().'.'.$request->image->extension();
+// $request->image->move(public_path('images'), $imgName);
+
+// return back()->with('success', 'Image uploaded Successfully!')->with('image', $imgName);
+////////////////////
 //pasword hash
 
 //create
@@ -128,6 +134,6 @@ return response()->json([
     return response()->json([
         'msg'=>'access token not correct'
             ],404);
-}
-}
+        }
+    }
 }
