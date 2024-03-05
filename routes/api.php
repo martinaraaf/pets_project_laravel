@@ -5,6 +5,10 @@ use App\Http\Controllers\API\ClinicController;
 // use App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\CommentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +44,14 @@ Route::controller(ClinicController::class)->prefix('/clinics')->group(function()
     // Get a clinic by ID (optional)
     // http://127.0.0.1:8000/api/clinics/1
     Route::get('/{id}', 'show');
+});
+
+
+Route::controller(AnimalController::class)->prefix('/animals')->group(function(){
+Route::post('/', 'create');
+Route::get('/', 'All_animals');
+Route::get('/{animel_type?}','By_Name');
+Route::get('/{id}','By_Id');
+Route::put('/{id}','update');
+Route::delete('/{id}', 'destroy');
 });
