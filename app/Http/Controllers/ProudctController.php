@@ -62,15 +62,19 @@ $data["user_id"]=1;
         //     "image"=>"image|mimes:png,jpg,jpeg",
         // ]);
         $data=$request->all();
-
+        // dd($data);
         $catId =  $request->category_id;
             // Category::findOrFail()
         $proudct=Proudct::findOrFail($id);
-        if($request->has("image" ) != "products/".$proudct->image){
+       if($request->has("image")){
             Storage::delete($proudct->image);
-            $image=Storage::putFile("products",$data['image']);
+            // $image=Storage::putFile("storage\products",$data['image']);
+            $image = $request->file('image')->store('products', 'public');
+
             $data['image']=$image;
-        }
+
+
+       }
         $proudct->update($data);
         return redirect()->route('allProudct');
 
@@ -80,7 +84,7 @@ $data["user_id"]=1;
         $proudct = Proudct::findOrFail($id);
         Storage::delete($proudct->image);
         $proudct->delete();
-        return redirect()->route('allProudct');
+        return ("done");
         }
 
     }

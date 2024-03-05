@@ -14,7 +14,7 @@
    @endforeach
 
    @endif --}}
-   <form action="{{route("updateProudct",[$proudct->id])}}" method="post">
+   <form action="{{route("updateProudct",[$proudct->id])}}" method="post" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -43,7 +43,24 @@
 <input type="file" name="image">
     <button type="submit">Update</button>
 </form>
+<ul>
+    @guest
+    <li>
+       <a href="{{url('register')}}">Register</a>
+    <a href="{{url('login')}}">Login</a>
+    </li>
 
+    @endguest
+    @auth
+
+    <li>
+    <form action="{{url('logout')}}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-danger">logout</button>
+    </form>
+    </li>
+    @endauth
+</ul>
 
 </body>
 </html>

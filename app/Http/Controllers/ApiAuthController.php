@@ -107,33 +107,60 @@ if($user){
         'msg'=>'credinatls not correct'
             ],405);
 }
-//password
-//login
+
 }
+
 
 public function logout(Request $request){
-$access_token=$request->header('access_token');
-//check hwa mogod wla la
-if($access_token!=null){
-  $user=  User::where('access_token','=',$access_token)->first();
-if($user){
-$user->update([
-    "access_token"=>null
-]);
-return response()->json([
-    'msg'=>'logout succssefuly'
-        ],200
-    );
-}else{
-    return response()->json([
-        'msg'=>'notfound'
-            ],404);
-}
+    $access_token=$request->header("access_token");
+    if($access_token !==null){
+        $user=User::where("access_token","=",$access_token)->first();
+        if($user!==null){
+            $user->update([
+                "access_token"=>null
+            ]);
+            return response()->json([
+                "success"=>"You logged out successuflly",
 
-}else{
-    return response()->json([
-        'msg'=>'access token not correct'
-            ],404);
+            ],200);
+           }
+        else{
+        return response()->json([
+            "msg"=>"Access Token Not Correct"
+        ],404);
         }
     }
+    else{
+        return response()->json([
+            "msg"=>"Access Token Not found"
+        ],404);
+    }
+
+
+}
+// public function logout(Request $request){
+// $access_token=$request->header('access_token');
+// //check hwa mogod wla la
+// if($access_token!=null){
+//   $user=  User::where('access_token','=',$access_token)->first();
+// if($user){
+// $user->update([
+//     "access_token"=>null
+// ]);
+// return response()->json([
+//     'msg'=>'logout succssefuly'
+//         ],200
+//     );
+// }else{
+//     return response()->json([
+//         'msg'=>'notfound'
+//             ],404);
+// }
+
+// }else{
+//     return response()->json([
+//         'msg'=>'access token not correct'
+//             ],404);
+//         }
+//     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            // $table->enum('role',['user','admin'])->default('user');
-            $table->string('access_token',255);
+           $table->enum('role',['user','admin'])->default('user');
+            $table->string('access_token',255)->nullable();
         });
     }
 

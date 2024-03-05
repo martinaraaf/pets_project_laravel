@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-<img src="{{assets("storage/$auth->image")}}" width=100px >
+
+{{-- <img src="{{assets("storage/$auth->image")}}" width=100px > --}}
 </body>
 </html>

@@ -42,6 +42,25 @@
     <button type="submit">Add</button>
 </form>
 
+
+<ul>
+    @guest
+    <li>
+       <a href="{{url('register')}}">Register</a>
+    <a href="{{url('login')}}">Login</a>
+    </li>
+
+    @endguest
+    @auth
+
+    <li>
+    <form action="{{url('logout')}}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-danger">logout</button>
+    </form>
+    </li>
+    @endauth
+</ul>
 </body>
 </html>
 

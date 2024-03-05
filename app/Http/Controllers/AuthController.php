@@ -60,8 +60,8 @@ $validatedData['image']=$image;
             Auth::login($user);
 
             if ($user) {
-                return('created');
-               // return redirect('/login')->with('success', 'Registration successful! Please login.');
+                return redirect(url('categories'));
+                // return redirect('/login')->with('success', 'Registration successful! Please login.');
             } else {
                 return back()->withInput()->with('error', 'Failed to register user.');
             }
@@ -86,7 +86,9 @@ public function login(Request $request){
     if(! $is_auth){
         return redirect(url('login'))->withErrors("credintails not correct");
     }
-return view("Auth.show");
+//  return view("Auth.show");
+ return redirect(url('categories'));
+
 }
 
 public function logout(){
