@@ -30,7 +30,50 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register',[ApiAuthController::class,'register']);
 Route::post('login',[ApiAuthController::class,'login']);
 Route::post('logout',[ApiAuthController::class,'logout']);
+//get all categories api
+//http://127.0.0.1:8000/api/categories
+Route::get('categories',[ApiCategoryController::class,'all']);
 
+//http://127.0.0.1:8000/api/categories/show/{id}
+Route::get('categories/show/{id}',[ApiCategoryController::class,'show']);
+
+// to create new category
+//http://127.0.0.1:8000/api/categories/store
+Route::post('categories/store',[ApiCategoryController::class,'store']);
+
+//update
+//http://127.0.0.1:8000/api/categories/update/{id}/?_method=put i do method post and in params type put
+Route::put('categories/update/{id}',[ApiCategoryController::class,'update']);
+//delete category
+//http://127.0.0.1:8000/api/categories/delete/delete/?_method=DELETE
+Route::delete('categories/delete/{id}',[ApiCategoryController::class,'delete']);
+
+
+
+
+
+
+
+
+
+//get all proudcts api
+//http://127.0.0.1:8000/api/proudcts
+Route::get('proudcts',[ApiProudctController::class,'all']);
+
+//http://127.0.0.1:8000/api/proudcts/show/{id}
+
+Route::get('proudcts/show/{id}',[ApiProudctController::class,'show']);
+
+// to create new product
+//http://127.0.0.1:8000/api/proudcts/store
+Route::post('proudcts/store',[ApiProudctController::class,'store']);
+//update product
+//http://127.0.0.1:8000/api/proudcts/update/{id}/?_method=put the same in category product about method
+Route::put('proudcts/update/{id}',[ApiProudctController::class,'update']);
+
+
+//http://127.0.0.1:8000/api/proudcts/delete/delete/?_method=DELETE
+Route::delete('proudcts/delete/{id}',[ApiProudctController::class,'delete']);
 
 // APIs for clinics
 Route::controller(ClinicController::class)->prefix('/clinics')->group(function(){

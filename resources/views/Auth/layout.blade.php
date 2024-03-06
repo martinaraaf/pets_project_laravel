@@ -10,30 +10,29 @@
     <title>@yield('title')</title>
 </head>
 <body>
-<ul>
+{{-- <ul>
     <li>
-       <a href="{{url('Register')}}">Register</a>
+    <a href="{{url('register')}}">Register</a>
     <a href="{{url('login')}}">Login</a>
-
     <form action="{{url('logout')}}" method="post">
         @csrf
         <button type="submit" class="btn btn-danger">logout</button>
     </form>
     </li>
-</ul>
-    {{-- @guest
+</ul>--}}
+    @guest
 
-    <a href="{{url('Register')}}">Register</a>
+    <a href="{{url('register')}}">Register</a>
     <a href="{{url('login')}}">Login</a>
-    @endguest --}}
+    @endguest
 
-    {{-- @auth
+   @auth
 
     <form action="{{url('logout')}}" method="post">
         @csrf
         <button type="submit" class="btn btn-danger">logout</button>
     </form>
-    @endauth --}}
+    @endauth
     @yield('content')
 
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
