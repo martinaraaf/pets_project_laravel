@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -36,8 +35,9 @@ class AuthController extends Controller
                 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048|nullable',
                 'gender' => 'required|in:male,female',
             ]);
-
-            // Handle image upload
+$image=Storage::putFile("users",$validatedData['image']);
+$validatedData['image']=$image;
+// Handle image upload
             $imagePath = null;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('images');
@@ -60,8 +60,8 @@ class AuthController extends Controller
             Auth::login($user);
 
             if ($user) {
-                return('created');
-               // return redirect('/login')->with('success', 'Registration successful! Please login.');
+                return redirect(url('categories'));
+                // return redirect('/login')->with('success', 'Registration successful! Please login.');
             } else {
                 return back()->withInput()->with('error', 'Failed to register user.');
             }
@@ -86,7 +86,9 @@ public function login(Request $request){
     if(! $is_auth){
         return redirect(url('login'))->withErrors("credintails not correct");
     }
-return("done");
+//  return view("Auth.show");
+ return redirect(url('categories'));
+
 }
 
 public function logout(){
