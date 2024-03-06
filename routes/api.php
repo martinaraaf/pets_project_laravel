@@ -48,14 +48,6 @@ Route::put('categories/update/{id}',[ApiCategoryController::class,'update']);
 //http://127.0.0.1:8000/api/categories/delete/delete/?_method=DELETE
 Route::delete('categories/delete/{id}',[ApiCategoryController::class,'delete']);
 
-
-
-
-
-
-
-
-
 //get all proudcts api
 //http://127.0.0.1:8000/api/proudcts
 Route::get('proudcts',[ApiProudctController::class,'all']);
@@ -93,8 +85,9 @@ Route::controller(ClinicController::class)->prefix('/clinics')->group(function()
 Route::controller(AnimalController::class)->prefix('/animals')->group(function(){
 Route::post('/', 'create');
 Route::get('/', 'All_animals');
+Route::get('/new/{id}', [AnimalController::class, 'getAnimalById']);
 Route::get('/{animel_type?}','By_Name');
-Route::get('/{id}','By_Id');
 Route::put('/{id}','update');
 Route::delete('/{id}', 'destroy');
 });
+

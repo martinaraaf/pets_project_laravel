@@ -53,11 +53,15 @@ class AnimalController extends Controller
         return response()->json(['animals' => $animals]);
 
     }
-    public function By_Id($id)
-    {
-        $animal = Animal::find($id);
-        return response()->json(['animal' => $animal]);
 
+    public function getAnimalById($id)
+    {
+        try {
+            $animal = Animal::findOrFail($id);
+            return response()->json(['animal' => $animal]);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json(['error' => 'Animal not found'], 404);
+        }
     }
 
     public function By_Name(Request $request, $animel_type = null)
