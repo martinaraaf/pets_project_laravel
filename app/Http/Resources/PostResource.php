@@ -31,7 +31,7 @@ class PostResource extends JsonResource
 
         if ($imagePath) {
             // Generate the URL based on the configured storage disk
-            return asset('storage/' . $imagePath);
+            return asset('public/' . $imagePath);
         }
 
         return null;

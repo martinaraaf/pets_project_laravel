@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\API\ClinicController;
+use App\Http\Controllers\AuthController;
+
 // use App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,11 +49,7 @@ Route::controller(ClinicController::class)->prefix('/clinics')->group(function()
 });
 
 
-Route::controller(AnimalController::class)->prefix('/animals')->group(function(){
-Route::post('/', 'create');
-Route::get('/', 'All_animals');
-Route::get('/{animel_type?}','By_Name');
-Route::get('/{id}','By_Id');
-Route::put('/{id}','update');
-Route::delete('/{id}', 'destroy');
-});
+
+
+
+

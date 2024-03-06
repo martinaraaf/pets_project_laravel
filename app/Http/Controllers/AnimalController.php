@@ -16,8 +16,7 @@ class AnimalController extends Controller
     $validator = Validator::make($request->all(), [
         'name' => 'nullable|string|max:25',
         'age' => 'required|integer',
-        'animel_type' => 'required|string', // Adjust validation as needed
-        'gender' => 'required|string', // Adjust validation as needed
+        'animel_type' => 'required|string',
         'location' => 'required|string',
         'disc' => 'nullable|string',
         'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -28,15 +27,13 @@ class AnimalController extends Controller
     }
 
     $image = $request->file('image');
-    if (!$image) {
-        return response()->json(['error' => 'No image file provided.'], 422);
-    }
+    $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-    $imagePath = $image->store('animal_images', 'public');
-    if (!$imagePath) {
-        return response()->json(['error' => 'Failed to store the image.'], 500);
-    }
+    $customFolder = 'animals_images';
 
+    $image->move(public_path($customFolder), $imageName);
+
+    $newFilePath = "{$customFolder}/{$imageName}";
     $animal = Animal::create([
         'name' => $request->input('name'),
         'age' => $request->input('age'),
@@ -44,7 +41,7 @@ class AnimalController extends Controller
         'gender' => $request->input('gender'),
         'disc' => $request->input('disc'),
         'location' => $request->input('location'),
-        'image' => $imagePath,
+        'image' => $newFilePath,
     ]);
 
     return response()->json(['animal' => $animal, 'message' => 'Animal created successfully']);
