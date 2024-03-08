@@ -12,9 +12,11 @@ class ProudctController extends Controller
     //
     public function all(){
 
-        // $proudcts= Proudct::paginate(10);
 
         $proudcts = Proudct::all();
+        $proudcts= Proudct::paginate(10);
+    return view('Proudcts.all', ['proudcts' => $proudcts]);
+        // $products = Proudct::paginate(10);
         return view("Proudcts.all", compact("proudcts"));
     }
     public function show($id){
@@ -84,7 +86,19 @@ $data["user_id"]=1;
         $proudct = Proudct::findOrFail($id);
         Storage::delete($proudct->image);
         $proudct->delete();
-        return ("done");
+        return redirect()->route('allProudct');
         }
+
+
+
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $proudcts = Proudct::where('title', 'like', "%$query%")->get();
+
+    return view('Proudcts.all', compact('proudcts'));
+}
+
 
     }

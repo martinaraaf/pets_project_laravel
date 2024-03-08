@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CommentController;
-
+use App\Http\Controllers\ApiCategoryController;
+use App\Http\Controllers\ApiProudctController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,10 @@ Route::put('proudcts/update/{id}',[ApiProudctController::class,'update']);
 //http://127.0.0.1:8000/api/proudcts/delete/delete/?_method=DELETE
 Route::delete('proudcts/delete/{id}',[ApiProudctController::class,'delete']);
 
+//search
+//http://127.0.0.1:8000/api/products/search
+Route::get('products/search',[ApiProudctController::class,'search'] )->name('apiProductsSearch');
+
 
 Route::controller(CartController::class)->prefix('/carts')->group(function(){
 // Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('/carts')->group(function(){
@@ -88,6 +93,7 @@ Route::controller(CartController::class)->prefix('/carts')->group(function(){
     // http://127.0.0.1:8000/api/cart/id
     Route::delete('/{id}', 'deleteCartItem');
 });
+
 
 // APIs for clinics
 Route::controller(ClinicController::class)->prefix('/clinics')->group(function(){
@@ -112,4 +118,5 @@ Route::get('/{animel_type?}','By_Name');
 Route::put('/{id}','update');
 Route::delete('/{id}', 'destroy');
 });
+
 

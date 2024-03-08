@@ -122,4 +122,15 @@ class ApiProudctController extends Controller
 
     ],200);
       }
+
+      public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $proudcts = Proudct::where('title', 'like', "%$query%")
+                        ->orWhere('desc', 'like', "%$query%")
+                        ->get();
+
+    return response()->json(['proudcts' => $proudcts], 200);
+}
     }

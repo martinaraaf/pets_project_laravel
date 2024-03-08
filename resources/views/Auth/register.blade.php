@@ -2,13 +2,13 @@
 
 @section('content')
 
-<section class="vh-100 bg-image"
-style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+<section class="vh-200 bg-image"
+style="background-color:rgba(232, 230, 230, 0.927);>
 <div class="mask d-flex align-items-center h-100 gradient-custom-3">
   <div class="container h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-        <div class="card" style="border-radius: 15px;">
+        <div class="card shadow-sm" style="border-radius: 15px; ">
           <div class="card-body p-5">
             <h2 class="text-uppercase text-center mb-5">Create an account</h2>
              <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
