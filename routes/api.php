@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\API\ClinicController;
-// use App\Http\Controllers\API;
+use App\Http\Controllers\Api\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
@@ -26,10 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //auth
-
 Route::post('register',[ApiAuthController::class,'register']);
 Route::post('login',[ApiAuthController::class,'login']);
 Route::post('logout',[ApiAuthController::class,'logout']);
+
+
 //get all categories api
 //http://127.0.0.1:8000/api/categories
 Route::get('categories',[ApiCategoryController::class,'all']);
@@ -66,6 +67,27 @@ Route::put('proudcts/update/{id}',[ApiProudctController::class,'update']);
 
 //http://127.0.0.1:8000/api/proudcts/delete/delete/?_method=DELETE
 Route::delete('proudcts/delete/{id}',[ApiProudctController::class,'delete']);
+
+
+Route::controller(CartController::class)->prefix('/carts')->group(function(){
+// Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('/carts')->group(function(){
+    // APIs for cart
+    // 1) add item to cart
+    // http://127.0.0.1:8000/api/carts/add
+    Route::post('/add', 'addToCart');
+
+    // 2) retrive cart items
+    // http://127.0.0.1:8000/api/cart/
+    Route::get('/', 'getCart');
+
+    // 3) update quantity of specific item in the cart
+    // http://127.0.0.1:8000/api/cart/id
+    Route::put('/{id}', 'updateCart');
+
+    // 3) delete item in the cart
+    // http://127.0.0.1:8000/api/cart/id
+    Route::delete('/{id}', 'deleteCartItem');
+});
 
 // APIs for clinics
 Route::controller(ClinicController::class)->prefix('/clinics')->group(function(){
