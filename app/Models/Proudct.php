@@ -20,4 +20,9 @@ class Proudct extends Model
         return $this->belongsTo(User::class);
 
     }
+
+    public function carts(){
+        return $this->hasMany(Cart::class);
+
+    }
 }

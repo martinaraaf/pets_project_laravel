@@ -31,6 +31,15 @@ class User extends Authenticatable implements JWTSubject
         'gender',
         'access_token',
     ];
+    public function proudcts(){
+        return $this->hasMany(Proudct::class);
+
+    }
+
+    public function carts(){
+        return $this->hasMany(Cart::class);
+
+    }
 
     /**
      * The attributes that should be hidden for serialization.
