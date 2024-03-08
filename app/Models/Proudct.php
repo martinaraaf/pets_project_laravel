@@ -9,7 +9,7 @@ class Proudct extends Model
 {
     use HasFactory;
     protected $fillable=[
-        "category_id","","title","desc","price","user_id","image"
+        "","category_id","id","title","desc","price","user_id","image"
     ];
     public function category(){
         return $this->belongsTo(Category::class);

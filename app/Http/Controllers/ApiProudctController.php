@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProudctResourse;
+use App\Models\Category;
 use App\Models\Proudct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,8 +13,27 @@ class ApiProudctController extends Controller
 {
     //
     public function all(){
-     $proudcts=  Proudct::all();
-     return ProudctResourse::collection($proudcts);
+    //  $proudcts=  Proudct::all();
+
+    $proudcts = Proudct::with('category')->get();
+    // dd($proudcts);
+
+    // Modify the products data to include category name instead of category id
+    $productsData = $proudcts->map(function ($proudct) {
+        return [
+            'id' => $proudct->id,
+            'name' => $proudct->title,
+            'description' => $proudct->desc,
+            'image' => asset('storage/' . $proudct->image),
+            'price' => $proudct->price,
+            'category_name' => $proudct->category->name, // Access the category name
+        ];
+    });
+    //   return ProudctResourse::collection($proudcts);
+        //   return ProudctResourse::collection($productsData);
+        return response()->json($productsData);
+
+
 
     }
 

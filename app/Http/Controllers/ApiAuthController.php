@@ -46,7 +46,7 @@ if ($request->hasFile('image')) {
 //pasword hash
 
 //create
-$access_token= Str::random(64);
+// $access_token= Str::random(64);
 User::create([
     'name' => $request->name,
     'email' => $request->email,
@@ -59,7 +59,7 @@ User::create([
     'city' => $request->city,
     'image' => $imagePath,
     'gender' => $request->gender,
-'access_token'=>$access_token,
+// 'access_token'=>$access_token,
 ]);
 //msg
 if($Validator->fails()){

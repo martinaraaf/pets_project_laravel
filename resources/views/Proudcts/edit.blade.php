@@ -75,6 +75,8 @@
         @endforeach
     </select>
 
+   
+
     <img src="{{ asset("storage/$proudct->image") }}" width="100px">
     <input type="file" name="image">
 

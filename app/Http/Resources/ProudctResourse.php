@@ -15,12 +15,15 @@ class ProudctResourse extends JsonResource
     public function toArray(Request $request): array
     {
         return  [
+            "id"=>$this->id,
             "product_name"=>$this->title,
             "desc"=>$this->desc,
             "category_id"=>$this->category_id,
             "user_id"=>$this->user_id,
             "price"=>$this->price,
             "image"=>asset('storage')."/".$this->image,
+            // "category_name"=>$this->category_name,
+
 
 
 
