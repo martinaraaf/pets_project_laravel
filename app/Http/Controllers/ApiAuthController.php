@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -67,73 +68,87 @@ if($Validator->fails()){
     ],
 );
 }}
-public function login(Request $request){
+public function login(Request $request)
+{
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $token = Auth::guard('api')->login($user);
+        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);
+    }
+
+    return response()->json(['message' => 'Unauthorized. Invalid credentials'], 401);
+}
 //validation
-$Validator= Validator::make($request->all(),[
+// $Validator= Validator::make($request->all(),[
 
-    "email" => 'required|email|max:100',
-    "password" => 'required|string|min:6',
+//     "email" => 'required|email|max:100',
+//     "password" => 'required|string|min:6',
 
-]);
-if($Validator->fails()){
-    return response()->json([
-'msg'=>$Validator->errors()
-    ],301);
-}
-//check email
-$access_token=Str::random(64);
-$user=User::where("email",'=',$request->email)->first();
-if($user){
- $password=   Hash::check($request->password,$user->password);
- if($password){
-    //update access token
-    $user->update([
-"access_token"=>$access_token
+// ]);
+// if($Validator->fails()){
+//     return response()->json([
+// 'msg'=>$Validator->errors()
+//     ],301);
+// }
+// //check email
+// $access_token=Str::random(64);
+// $user=User::where("email",'=',$request->email)->first();
+// if($user){
+//  $password=   Hash::check($request->password,$user->password);
+//  if($password){
+//     //update access token
+//     $user->update([
+// "access_token"=>$access_token
 
-    ]);
-    //msg
-    return response()->json([
-        'msg'=>"you logged in succesfully",
-        "access_token"=>$access_token
-            ],200);
- }else{
-    return response()->json([
-        'msg'=>'credinatls not correct'
-            ],405);
- }
+//     ]);
+//     //msg
+//     return response()->json([
+//         'msg'=>"you logged in succesfully",
+//         "access_token"=>$access_token
+//             ],200);
+//  }else{
+//     return response()->json([
+//         'msg'=>'credinatls not correct'
+//             ],405);
+//  }
 
-}else{
-    return response()->json([
-        'msg'=>'credinatls not correct'
-            ],405);
-}
+// }else{
+//     return response()->json([
+//         'msg'=>'credinatls not correct'
+//             ],405);
+// }
 
-}
+
 
 
 public function logout(Request $request){
-    $access_token=$request->header("access_token");
-    if($access_token !==null){
-        $user=User::where("access_token","=",$access_token)->first();
-        if($user!==null){
-            $user->update([
-                "access_token"=>null
-            ]);
-            return response()->json([
-                "success"=>"You logged out successuflly",
+    Auth::guard('api')->logout();
 
-            ],200);
-           }
-        else{
-        return response()->json([
-            "msg"=>"Access Token Not Correct"
-        ],404);
-        }
-    }
-    else{
-        return response()->json([
-            "msg"=>"Access Token Not found"
-        ],404);
+    return response()->json(['message' => 'Successfully logged out']);
+    // $access_token=$request->header("access_token");
+    // if($access_token !==null){
+    //     $user=User::where("access_token","=",$access_token)->first();
+    //     if($user!==null){
+    //         $user->update([
+    //             "access_token"=>null
+    //         ]);
+    //         return response()->json([
+    //             "success"=>"You logged out successuflly",
+
+    //         ],200);
+    //        }
+    //     else{
+    //     return response()->json([
+    //         "msg"=>"Access Token Not Correct"
+    //     ],404);
+    //     }
+    // }
+    // else{
+    //     return response()->json([
+    //         "msg"=>"Access Token Not found"
+    //     ],404);
     }
 
 
@@ -163,4 +178,4 @@ public function logout(Request $request){
 //             ],404);
 //         }
 //     }
-}
+
