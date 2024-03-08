@@ -37,7 +37,7 @@ Route::get('users', [AuthController::class, 'allUsers'])->middleware('isAdmin', 
 //showall
 //read
 
-Route::middleware('auth')->group(
+Route::middleware('isAdmin','auth')->group(
     function () {
 
         Route::get("categories/create", [CategoryController::class, "create"]);
@@ -56,7 +56,7 @@ Route::get('categories/show/{id}', [CategoryController::class, 'show']);
 //insert
 
 //proudcts
-Route::middleware('auth')->controller(ProudctController::class)
+Route::middleware('isAdmin','auth')->controller(ProudctController::class)
     ->group(function () {
         // Route::controller('ProudctController', ProudctController::class);
 
@@ -67,10 +67,17 @@ Route::middleware('auth')->controller(ProudctController::class)
         Route::put('proudcts/{id}/update', "updata")->name('updateProudct');
         //delete
         Route::delete('proudcts/delete/{id}', "delete");
-        Route::get('proudcts/all', "all")->name('allProudct');
-        Route::get('proudcts/show/{id}', "show")->name('showProudct');
     });    // Route::middleware(IsAdmin::class)->group(function(){
-//all
+
+        Route::middleware('auth')->group(function () {
+            Route::get('proudcts/all',[ProudctController::class, "all"])->name('allProduct');
+            Route::get('proudcts/show/{id}', [ProudctController::class, "show"])->name('showProudct');
+        });
+
+    Route::get('/search', [ProudctController::class, "search"])->name('search');
+
+
+        //all
 //create
 
 // });
