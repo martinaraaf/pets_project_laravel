@@ -4,23 +4,32 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CommentResource;
 
 use App\Models\Comment;
+use App\Models\Post;
 
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, Post $post)
+    public function store(Request $request, $postId)
     {
+        $post = Post::findOrFail($postId);
         $request->validate([
-            'content' => 'required|text',
+            'content' => 'required',
         ]);
-    
-        $comment = auth()->user()->comments()->create([
-            'post_id' => $post->id,
+
+        $comment = $post->comments()->create([
             'content' => $request->input('content'),
         ]);
-    
-        return new CommentResource($comment);
+
+        return response()->json(['comment' => $comment], 201);
+    }
+
+    public function index($postId)
+    {
+        $post = Post::findOrFail($postId);
+        $comments = $post->comments;
+
+        return response()->json(['comments' => $comments]);
     }
     
     public function update(Request $request, Comment $comment)

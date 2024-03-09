@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\ApiCategoryController;
-use App\Http\Controllers\ApiProudctController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -128,3 +127,15 @@ Route::delete('/{id}', 'destroy');
 });
 
 
+Route::controller(PostController::class)->prefix('/posts')->group(function(){
+    Route::get('/', 'index');
+    Route::get('/{id}', 'show');
+    Route::post('/', 'store');
+    Route::delete('/{id}', 'destroy');
+
+
+});
+
+
+Route::get('/posts/{postId}/comments', [CommentController::class,'index']);
+Route::post('/posts/{postId}/comments', [CommentController::class,'store']);

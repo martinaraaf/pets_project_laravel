@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Post;
 
@@ -11,26 +12,43 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user', 'comments.user')->get();
-        return PostResource::collection($posts);
+        $posts = Post::all();
+        return response()->json(['posts' => $posts]);
     }
     
-    public function show(Post $post)
+    public function show($id)
     {
-        $post->load('user', 'comments.user');
-        return new PostResource($post);
+    
+            $post = Post::findOrFail($id);
+            return response()->json(['post' => $post]);
+        
     }
     
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|text',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     
         ]);
-    
-        $post = auth()->user()->posts()->create($request->all());
-        return new PostResource($post);
+
+        // auth()->user()->posts()->
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+        $customFolder = 'posts_images';
+
+        $image->move(public_path($customFolder), $imageName);
+
+        $newFilePath = "{$customFolder}/{$imageName}";
+
+        $post = Post::create([
+            'content' => $request->input('content'),
+            'image' => $newFilePath,
+        ]);
+
+        return response()->json(['post' => $post, 'message' => 'post created successfully']);
+        
     }
     public function update(Request $request, Post $post)
         {
@@ -48,13 +66,11 @@ class PostController extends Controller
             return new PostResource($post);
         }
     
-    public function destroy(Post $post)
+    public function destroy( Post $id)
         {
-            if ($post->user_id !== auth()->id()) {
-                return response()->json(['error' => 'Unauthorized'], 403);
-            }
+            
     
-            $post->delete();
+            $id->delete();
     
             return response()->json(['message' => 'Post deleted successfully']);
         }
