@@ -63,6 +63,21 @@
         <span class="error-message">{{ $message }}</span>
     @enderror
 
+    <input type="text" name="weight" value="{{ $proudct->weight }}" required>
+    @error('weight')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+
+    <input type="text" name="ingredients" value="{{ $proudct->ingredients }}" required>
+    @error('ingredients')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+
+    <input type="text" name="stock_number" value="{{ $proudct->stock_number }}" required>
+    @error('stock_number')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+
     <textarea name="desc" cols="30" rows="10" required>{{ $proudct->desc }}</textarea>
     @error('desc')
         <span class="error-message">{{ $message }}</span>
@@ -75,7 +90,7 @@
         @endforeach
     </select>
 
-   
+
 
     <img src="{{ asset("storage/$proudct->image") }}" width="100px">
     <input type="file" name="image">

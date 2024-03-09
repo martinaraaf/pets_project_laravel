@@ -64,6 +64,27 @@
             @enderror
         </div>
         <div class="form-group">
+            <label for="stock_number">stock number</label>
+            <input type="text" class="form-control" name="stock_number" value="{{ old('stock_number') }}" id="stock_number">
+            @error('stock_number')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="ingredients">ingredients:</label>
+            <input type="text" class="form-control" name="ingredients" value="{{ old('ingredients') }}" id="ingredients">
+            @error('ingredients')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="weight">weight</label>
+            <input type="text" class="form-control" name="weight" value="{{ old('weight') }}" id="weight">
+            @error('weight')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
             <label for="category_id">Category:</label>
             <select class="form-control" name="category_id" id="category_id">
                 @foreach ($categories as $category)
@@ -71,7 +92,7 @@
                 @endforeach
             </select>
         </div>
-      
+
         <div class="form-group">
             <label for="image">Image:</label>
             <input type="file" class="form-control-file" name="image" id="image">
