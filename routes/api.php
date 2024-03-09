@@ -9,6 +9,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\ApiCategoryController;
+use App\Http\Controllers\ApiProudctController;
 
 /*
 |--------------------------------------------------------------------------
