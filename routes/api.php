@@ -26,10 +26,38 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+
+
+Route::middleware('api.auth')->group(function(){
+
+    Route::post('logout',[ApiAuthController::class,'logout']);
+    //update
+    //http://127.0.0.1:8000/api/categories/update/{id}/?_method=put i do method post and in params type put
+    Route::put('categories/update/{id}',[ApiCategoryController::class,'update']);
+    // to create new category
+    //http://127.0.0.1:8000/api/categories/store
+    Route::post('categories/store',[ApiCategoryController::class,'store']);
+
+    //delete category
+    //http://127.0.0.1:8000/api/categories/delete/delete/?_method=DELETE
+    Route::delete('categories/delete/{id}',[ApiCategoryController::class,'delete']);
+    // to create new product
+    //http://127.0.0.1:8000/api/proudcts/store
+    Route::post('proudcts/store',[ApiProudctController::class,'store']);
+    //update product
+    //http://127.0.0.1:8000/api/proudcts/update/{id}/?_method=put the same in category product about method
+    Route::put('proudcts/update/{id}',[ApiProudctController::class,'update']);
+
+
+    //http://127.0.0.1:8000/api/proudcts/delete/delete/?_method=DELETE
+    Route::delete('proudcts/delete/{id}',[ApiProudctController::class,'delete']);
+});
+
 //auth
 Route::post('register',[ApiAuthController::class,'register']);
 Route::post('login',[ApiAuthController::class,'login']);
-Route::post('logout',[ApiAuthController::class,'logout']);
 
 
 //get all categories api
@@ -39,16 +67,6 @@ Route::get('categories',[ApiCategoryController::class,'all']);
 //http://127.0.0.1:8000/api/categories/show/{id}
 Route::get('categories/show/{id}',[ApiCategoryController::class,'show']);
 
-// to create new category
-//http://127.0.0.1:8000/api/categories/store
-Route::post('categories/store',[ApiCategoryController::class,'store']);
-
-//update
-//http://127.0.0.1:8000/api/categories/update/{id}/?_method=put i do method post and in params type put
-Route::put('categories/update/{id}',[ApiCategoryController::class,'update']);
-//delete category
-//http://127.0.0.1:8000/api/categories/delete/delete/?_method=DELETE
-Route::delete('categories/delete/{id}',[ApiCategoryController::class,'delete']);
 
 //get all proudcts api
 //http://127.0.0.1:8000/api/proudcts
@@ -58,16 +76,6 @@ Route::get('proudcts',[ApiProudctController::class,'all']);
 
 Route::get('proudcts/show/{id}',[ApiProudctController::class,'show']);
 
-// to create new product
-//http://127.0.0.1:8000/api/proudcts/store
-Route::post('proudcts/store',[ApiProudctController::class,'store']);
-//update product
-//http://127.0.0.1:8000/api/proudcts/update/{id}/?_method=put the same in category product about method
-Route::put('proudcts/update/{id}',[ApiProudctController::class,'update']);
-
-
-//http://127.0.0.1:8000/api/proudcts/delete/delete/?_method=DELETE
-Route::delete('proudcts/delete/{id}',[ApiProudctController::class,'delete']);
 
 //search
 //http://127.0.0.1:8000/api/products/search
