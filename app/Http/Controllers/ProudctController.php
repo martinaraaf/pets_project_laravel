@@ -12,10 +12,13 @@ class ProudctController extends Controller
     //
     public function all(){
 
-        // $proudcts= Proudct::paginate(10);
 
         $proudcts = Proudct::all();
-        return view("Proudcts.all", compact("proudcts"));
+
+        $proudcts= Proudct::paginate(10);
+    return view('Proudcts.all', ['proudcts' => $proudcts]);
+        // $products = Proudct::paginate(10);
+        // return view("Proudcts.all", compact("proudcts"));
     }
     public function show($id){
         $proudct=Proudct::findOrFail($id);
@@ -30,6 +33,7 @@ class ProudctController extends Controller
         $data=$request->validate([
             "category_id"=>"required|exists:categories,id",
             // "category"=>"required|string|max:255",
+            // "category_name"=>"required|exists:categories,name",
 
             "title"=>"required|string|max:255",
             "desc"=>"required|string",
@@ -64,6 +68,8 @@ $data["user_id"]=1;
         $data=$request->all();
         // dd($data);
         $catId =  $request->category_id;
+        $catname =  $request->category_name;
+
             // Category::findOrFail()
         $proudct=Proudct::findOrFail($id);
        if($request->has("image")){
@@ -76,7 +82,7 @@ $data["user_id"]=1;
 
        }
         $proudct->update($data);
-        return redirect()->route('allProudct');
+        return redirect()->route('allProduct');
 
     }
 
@@ -84,7 +90,24 @@ $data["user_id"]=1;
         $proudct = Proudct::findOrFail($id);
         Storage::delete($proudct->image);
         $proudct->delete();
-        return ("done");
+        return redirect()->route('allProduct');
         }
+
+
+
+
+
+        public function search(Request $request)
+        {
+            $query = $request->input('query');
+
+            // Perform a database query to find products matching the search query
+            $proudcts = Proudct::where('title', 'like', "%$query%")->paginate(10);
+
+            // Return the view with the matched products
+            return view('proudcts.all')->with('proudcts', $proudcts);
+        }
+
+
 
     }
