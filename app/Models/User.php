@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -27,11 +27,9 @@ class User extends Authenticatable
         'street',
         'area',
         'city',
-       'image',
+        'image',
         'gender',
         'access_token',
-
-
     ];
     public function proudcts(){
         return $this->hasMany(Proudct::class);
@@ -62,12 +60,47 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function posts(){
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); // Return the primary key of the user
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+     * Define a relationship with the Post model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * Define a relationship with the Animal model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function animals()
     {
         return $this->hasMany(Animal::class);
     }
+
+    // You can define other relationships and methods as needed...
 }
+

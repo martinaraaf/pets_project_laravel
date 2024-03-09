@@ -17,8 +17,8 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'content' => $this->content,
-            'image_url' => $this->getImageUrl(),
-            'user' => $this->user->name,
+            'image' => $this->getImageUrl(),
+            // 'user' => $this->user->name,
             'created_at' => $this->created_at->toDateTimeString(),
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
@@ -27,13 +27,14 @@ class PostResource extends JsonResource
     private function getImageUrl()
     {
         // Assuming 'image' is the column in your 'posts' table
-        $imagePath = $this->image;
+        $image= $this->image;
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $customFolder = 'posts_images';
 
-        if ($imagePath) {
-            // Generate the URL based on the configured storage disk
-            return asset('public/' . $imagePath);
-        }
+        $image->move(public_path($customFolder), $imageName);
+    
+        $newFilePath = "{$customFolder}/{$imageName}";
 
-        return null;
+        return $newFilePath;
     }
 }

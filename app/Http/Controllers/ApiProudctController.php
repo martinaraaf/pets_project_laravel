@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProudctResourse;
+use App\Models\Category;
 use App\Models\Proudct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,20 +13,55 @@ class ApiProudctController extends Controller
 {
     //
     public function all(){
-     $proudcts=  Proudct::all();
-     return ProudctResourse::collection($proudcts);
+    //  $proudcts=  Proudct::all();
+
+    $proudcts = Proudct::with('category')->get();
+    // dd($proudcts);
+
+    // Modify the products data to include category name instead of category id
+    $productsData = $proudcts->map(function ($proudct) {
+        return [
+            'id' => $proudct->id,
+            'name' => $proudct->title,
+            'description' => $proudct->desc,
+            'image' => asset('storage/' . $proudct->image),
+            'price' => $proudct->price,
+            'ingredients' => $proudct->ingredients,
+            'weight' => $proudct->weight,
+            'category_name' => $proudct->category->name,
+            'ingredients' => $proudct->ingredients,
+            'weight' => $proudct->weight,
+            'stock_number' => $proudct->stock_number,
+        ];
+    });
+    //   return ProudctResourse::collection($proudcts);
+        //   return ProudctResourse::collection($productsData);
+        return response()->json($productsData);
+
+
 
     }
 
     public function show($id){
-        $proudct =  Proudct::find($id);
-        if( $proudct == null ){
+        $proudct = Proudct::with('category')->find($id);
+        if ($proudct == null) {
             return response()->json([
-                "msg"=>"product not found"
-               ],404);
-            }
-                return new ProudctResourse($proudct);
-      }
+                "msg" => "Product not found"
+            ], 404);
+        }
+        $proudctData = [
+            'id' => $proudct->id,
+            'name' => $proudct->title,
+            'description' => $proudct->desc,
+            'image' => asset('storage/' . $proudct->image),
+            'price' => $proudct->price,
+            'category_name' => $proudct->category->name,
+            'ingredients' => $proudct->ingredients,
+            'weight' => $proudct->weight,
+            'stock_number' => $proudct->stock_number,
+        ];
+        return response()->json($proudctData);
+    }
 
       public function store(Request $request){
         //validation
@@ -44,7 +80,7 @@ class ApiProudctController extends Controller
                 ],301);
             }
             $imageName=Storage::putFile("Product",$request->image);
-            Proudct::create([
+         $proudct=   Proudct::create([
                 "category_id"=>$request->category_id,
                 "category_name"=>$request->category,
                 "product_id"=>$request->id,
@@ -52,13 +88,27 @@ class ApiProudctController extends Controller
                 "desc"=>$request->desc,
                 "price"=>$request->price,
                 "image"=>$imageName,
-                "user_id"=>9
-            ]);
-            return response()->json([
-                "msg"=>"Product added successuflly"
-            ],201);
+                "user_id"=>9,
+                'ingredients' => $request->ingredients,
+                'weight' => $request->weight,
+                'stock_number' => $request->stock_number,
 
+
+
+
+            ]);
+            if ($proudct) {
+                return response()->json([
+                    "msg" => "Product added successfully"
+                ], 201);
+            } else {
+                return response()->json([
+                    "msg" => "Failed to add product"
+                ], 500); // Internal server error
+            }
         }
+
+
 
 
 
@@ -95,6 +145,11 @@ class ApiProudctController extends Controller
                 "desc"=>$request->desc,
                 "price"=>$request->price,
                 "image"=>$imageName,
+                'ingredients' => $request->ingredients,
+                'weight' => $request->weight,
+                'stock_number' => $request->stock_number,
+
+
             ]);
             return response()->json([
                 "msg"=>"Product updated successuflly",

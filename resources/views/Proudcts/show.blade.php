@@ -66,6 +66,10 @@
             <p class="card-text">Category: {{ $proudct->category->name }}</p>
             <p class="card-text">{{ $proudct->desc }}</p>
             <p class="card-text">Price: {{ $proudct->price }}</p>
+            <p class="card-text">stock_number: {{ $proudct->stock_number }}</p>
+            <p class="card-text">ingredients: {{ $proudct->ingredients }}</p>
+            <p class="card-text">weight: {{ $proudct->weight }}</p>
+
             <div class="img-container">
                 <img src="{{ asset("storage/$proudct->image") }}" width="100px" alt="Product Image">
             </div>
