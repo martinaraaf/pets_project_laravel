@@ -10,6 +10,8 @@ use App\Http\Requests\CartItemRequest;
 use App\Http\Controllers\ProudctController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+
 
 
 class CartController extends Controller
@@ -17,9 +19,8 @@ class CartController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getCart(User $id)
+    public function getCart($id)
     {
-        // $user = Auth::user();
         $cartItems = Cart::where('user_id', $id)->with('product')->get();
 
         $total = 0;
@@ -55,9 +56,13 @@ class CartController extends Controller
             'user_id'=> $user,
             'product_id'=>$request->product_id,
             'quantity'=>$request->quantity,
-            'subtotal'=>$request->quantity * $product->price
+            'subtotal'=>$request->quantity * $product->price,
+            'expired_at' => now()->addMinutes(5)
         ]);
 
+        $product->stock_number = $product->stock_number - $cart->quantity;
+        $product->save();
+        // dd($product->stock_number);
         // $cart->quantity = $request->quantity;
         // $cart->save();
 
@@ -74,18 +79,53 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateCart(CartItemRequest $request, string $id)
+    public function updateCart($id, Request $request)
     {
+        // dd($request->quantity);
+        $validator = Validator::make($request->all(), [
+            'quantity' => 'required|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
         
+        $cart = Cart::find($id);
+
+        if (!$cart) {
+            return response()->json(['message' => 'Cart item not found'], 404);
+        }
+
+        $old_quantity = $cart->quantity;
+
+        $cart->quantity = $request->quantity;
+        $cart->save();
+
+        if ($cart->quantity == 0) {
+            $cart->delete();
+            return response()->json(['message' => 'Item removed from cart']);
+        }
+
+        $product->stock_number = $product->stock_number - ($cart->quantity - $old_quantity);
+        $product->save();
+
+        $cart->load('product');
+        $cart->subtotal = $cart->quantity * $cart->product->price;
+
+        $cart->save();
+
+        return response()->json([
+            'message' => 'Cart item updated successfully',
+            'cart' => $cart,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function deleteCartItem(string $id)
+    public function deleteCartItem($user_id, $id)
     {
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->where('id', $id)->first();
+        $cart = Cart::where('user_id', $user_id)->where('id', $id)->first();
     
         if (!$cart) {
             return response()->json(['message' => 'Cart item not found'], 404);

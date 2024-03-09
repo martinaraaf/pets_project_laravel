@@ -15,6 +15,7 @@ class Cart extends Model
         'quantity',
         'subtotal',
         'access_token',
+        'expired_at',
     ];
 
     public function user(){
