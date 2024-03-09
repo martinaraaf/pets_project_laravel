@@ -17,9 +17,21 @@ class CartController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getCart()
+    public function getCart(User $id)
     {
-        //
+        // $user = Auth::user();
+        $cartItems = Cart::where('user_id', $id)->with('product')->get();
+
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $cartItem->subtotal = $cartItem->quantity * $cartItem->product->price;
+            $total += $cartItem->subtotal;
+        }
+
+        return response()->json([
+            'cart_items' => $cartItems,
+            'total' => $total,
+        ]);
     }
 
 
@@ -64,7 +76,7 @@ class CartController extends Controller
      */
     public function updateCart(CartItemRequest $request, string $id)
     {
-        //
+        
     }
 
     /**
@@ -72,6 +84,15 @@ class CartController extends Controller
      */
     public function deleteCartItem(string $id)
     {
-        //
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->where('id', $id)->first();
+    
+        if (!$cart) {
+            return response()->json(['message' => 'Cart item not found'], 404);
+        }
+    
+        $cart->delete();
+    
+        return response()->json(['message' => 'Item removed from cart successfully']);
     }
 }

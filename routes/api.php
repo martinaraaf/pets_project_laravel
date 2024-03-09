@@ -91,7 +91,7 @@ Route::controller(CartController::class)->prefix('/carts')->group(function(){
 
     // 2) retrive cart items
     // http://127.0.0.1:8000/api/cart/
-    Route::get('/', 'getCart');
+    Route::get('/{id}', 'getCart');
 
     // 3) update quantity of specific item in the cart
     // http://127.0.0.1:8000/api/cart/id
