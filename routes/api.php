@@ -32,15 +32,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('api.auth')->group(function(){
 
+    Route::post('logout',[ApiAuthController::class,'logout']);
+    //update
+    //http://127.0.0.1:8000/api/categories/update/{id}/?_method=put i do method post and in params type put
+    Route::put('categories/update/{id}',[ApiCategoryController::class,'update']);
+    // to create new category
+    //http://127.0.0.1:8000/api/categories/store
+    Route::post('categories/store',[ApiCategoryController::class,'store']);
 });
 
-Route::post('logout',[ApiAuthController::class,'logout']);
-//update
-//http://127.0.0.1:8000/api/categories/update/{id}/?_method=put i do method post and in params type put
-Route::put('categories/update/{id}',[ApiCategoryController::class,'update']);
-// to create new category
-//http://127.0.0.1:8000/api/categories/store
-Route::post('categories/store',[ApiCategoryController::class,'store']);
 
 //delete category
 //http://127.0.0.1:8000/api/categories/delete/delete/?_method=DELETE

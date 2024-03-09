@@ -15,9 +15,14 @@ class ApiMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->header('Authorization')) {
+        $user = auth('api')->user();
+
+       
+        if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        // If the user is authenticated, you can allow the request to continue to the next middleware or route handler
         return $next($request);
     }
 }
