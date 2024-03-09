@@ -34,7 +34,9 @@ class ProudctController extends Controller
             "category_id"=>"required|exists:categories,id",
             // "category"=>"required|string|max:255",
             // "category_name"=>"required|exists:categories,name",
-
+            "weight"=>"required",
+            "stock_number"=>"required|integer",
+            "ingredients"=>"string",
             "title"=>"required|string|max:255",
             "desc"=>"required|string",
             "price"=>"required|numeric",
