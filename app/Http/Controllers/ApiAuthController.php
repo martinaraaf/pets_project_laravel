@@ -120,7 +120,11 @@ public function login(Request $request)
 //             ],405);
 // }
 
-
+public function allUsers()
+    {
+        $users = User::all();
+        return response()->json(['users' => $users], 200);
+    }
 
 
 public function logout(Request $request){
