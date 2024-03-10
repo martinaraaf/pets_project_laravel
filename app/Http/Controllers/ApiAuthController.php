@@ -74,8 +74,9 @@ public function login(Request $request)
 
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
+
         $token = Auth::guard('api')->login($user);
-        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);
+        return response()->json(['message' => 'Login successful', 'access_token' => $token,'user'=>$user], 200);
     }
 
     return response()->json(['message' => 'Unauthorized. Invalid credentials'], 401);
@@ -140,6 +141,14 @@ public function allUsers()
     {
         $users = User::all();
         return response()->json(['users' => $users], 200);
+    }
+
+    public function getUser()
+    {
+      
+        $user = auth('api')->user();
+        dd($user);
+        return response()->json($user);
     }
 
 
