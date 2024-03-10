@@ -99,9 +99,13 @@ Route::middleware('api.auth')->controller(CartController::class)->prefix('carts'
     // http://127.0.0.1:8000/api/carts/edit/id
     Route::post('/edit/{id}', 'updateCart');
 
-    // 3) delete item in the cart
+    // 4) delete item in the cart
     // http://127.0.0.1:8000/api/cart/id
     Route::delete('/{user_id}/{id}', 'deleteCartItem');
+
+    // 5) transfere cart items from the cart to the Order table
+    // http://127.0.0.1:8000/api/carts/{id}
+    Route::post('/checkout/{id}', 'checkout');
 });
 
 
