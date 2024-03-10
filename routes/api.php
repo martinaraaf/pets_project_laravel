@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::get('user', [ApiAuthController::class, 'getUser']);
 
 
 
@@ -59,6 +60,8 @@ Route::post('register',[ApiAuthController::class,'register']);
 Route::get('allUsers',[ApiAuthController::class,'allUsers']);
 Route::get('user', [ApiAuthController::class, 'getUser']);
 Route::post('login',[ApiAuthController::class,'login']);
+// Route::get('login',[ApiAuthController::class,'login']);
+
 
 
 
@@ -123,19 +126,26 @@ Route::controller(ClinicController::class)->prefix('/clinics')->group(function()
     Route::get('/{id}', 'show');
 });
 
-
 Route::controller(AnimalController::class)->prefix('/animals')->group(function(){
 Route::post('/', 'create');
-Route::get('/', 'All_animals');
-Route::get('/new/{id}', [AnimalController::class, 'getAnimalById']);
+Route::get('/user', 'user_animals');
+
 Route::get('/{animel_type?}','By_Name');
 Route::put('/{id}','update');
 Route::delete('/{id}', 'destroy');
 });
 
 
+
+
+Route::get('/animals/new/{id}', [AnimalController::class, 'getAnimalById']);
+Route::get('/animals', [AnimalController::class, 'All_animals']);
+
+
+
 Route::controller(PostController::class)->prefix('/posts')->group(function(){
     Route::get('/', 'index');
+    Route::get('/user', 'user_posts');
     Route::get('/{id}', 'show');
     Route::post('/', 'store');
     Route::delete('/{id}', 'destroy');

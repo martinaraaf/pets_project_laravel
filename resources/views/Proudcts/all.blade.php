@@ -15,7 +15,14 @@
             align-items: center;
             margin-top: 20px;
         }
-
+.containerp{
+    display: flex;
+    justify-content: center;
+}
+.btn{
+    margin-left: 480px;
+    width: 150px
+}
         /* Style for the input field */
         .search-input {
             padding: 10px;
@@ -40,12 +47,13 @@
         .search-button:hover {
             background-color: #0056b3;
         }
+
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">dashboard</a>
+            <a class="navbar-brand" href="#" style="color: red; font-weight:bold;font-size:1.5vw;">Pet Zone dashboard</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -75,8 +83,8 @@
 
 
     <form class="search-form" action="{{ route('search') }}" method="GET">
-        <input class="search-input" type="text" name="query" placeholder="Search for products">
-        <button class="search-button" type="submit">Search</button>
+        <input class="search-input" type="text" name="query" placeholder="Search for products" style="width: 800px">
+        <button class="search-button" type="submit" >Search</button>
     </form>
     @if(isset($proudcts) && $proudcts->count() > 0)
     <div class="container mt-3">
@@ -86,6 +94,7 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Description</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -151,6 +160,8 @@
 @endif
 </div>
 
-{{$proudcts->links()}}
+<div class="containerp">
+    <div class="pagination">{{$proudcts->links()}}</div>
+</div>
 </body>
 </html>
