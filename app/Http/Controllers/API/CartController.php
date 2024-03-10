@@ -88,6 +88,7 @@ class CartController extends Controller
         $cart=null;
         DB::transaction(function() use ($id, $request, &$cart){
         
+            $product = Proudct::find($request->product_id);
             $validator = Validator::make($request->all(), [
                 'quantity' => 'required|integer|min:0',
             ]);
