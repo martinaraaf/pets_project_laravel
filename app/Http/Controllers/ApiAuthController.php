@@ -81,6 +81,22 @@ public function login(Request $request)
 
     return response()->json(['message' => 'Unauthorized. Invalid credentials'], 401);
 }
+// public function login (Request $request) {
+//     $request->validate([
+//         'email'=>'required|email',
+//         'password'=>'required',
+//     ]);
+
+//     $user = User::where('email', $request->email)->first();
+
+//     if(!$user || !Hash::check($request->password, $user->password)){
+//         throw ValidationException::withMessages([
+//             'email' => ['The provided credentials aren\'t correct']
+//         ]);
+//     }
+
+//     return $user->createToken($request->email)->plainTextToken;
+// }
 //validation
 // $Validator= Validator::make($request->all(),[
 
