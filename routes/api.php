@@ -6,8 +6,8 @@ use App\Http\Controllers\Api\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
-use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
 
 /*
@@ -118,19 +118,26 @@ Route::controller(ClinicController::class)->prefix('/clinics')->group(function()
     Route::get('/{id}', 'show');
 });
 
-
 Route::controller(AnimalController::class)->prefix('/animals')->group(function(){
 Route::post('/', 'create');
-Route::get('/', 'All_animals');
-Route::get('/new/{id}', [AnimalController::class, 'getAnimalById']);
+Route::get('/user', 'user_animals');
+
 Route::get('/{animel_type?}','By_Name');
 Route::put('/{id}','update');
 Route::delete('/{id}', 'destroy');
 });
 
 
+
+
+Route::get('/animals/new/{id}', [AnimalController::class, 'getAnimalById']);
+Route::get('/animals', [AnimalController::class, 'All_animals']);
+
+
+
 Route::controller(PostController::class)->prefix('/posts')->group(function(){
     Route::get('/', 'index');
+    Route::get('/user', 'user_posts');
     Route::get('/{id}', 'show');
     Route::post('/', 'store');
     Route::delete('/{id}', 'destroy');

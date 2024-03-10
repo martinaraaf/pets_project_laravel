@@ -25,26 +25,56 @@ class AnimalController extends Controller
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
     }
+    if (auth()->check()) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-    $image = $request->file('image');
-    $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $customFolder = 'animals_images';
 
-    $customFolder = 'animals_images';
+        $image->move(public_path($customFolder), $imageName);
 
-    $image->move(public_path($customFolder), $imageName);
+        $newFilePath = "{$customFolder}/{$imageName}";
+        
+        $animal = Animal::create([
+            'name' => $request->input('name'),
+            'age' => $request->input('age'),
+            'animel_type' => $request->input('animel_type'),
+            'gender' => $request->input('gender'),
+            'disc' => $request->input('disc'),
+            'location' => $request->input('location'),
+            'image' => $newFilePath,
+            'user_id' => auth()->user()->id,
+        ]);
 
-    $newFilePath = "{$customFolder}/{$imageName}";
-    $animal = Animal::create([
-        'name' => $request->input('name'),
-        'age' => $request->input('age'),
-        'animel_type' => $request->input('animel_type'),
-        'gender' => $request->input('gender'),
-        'disc' => $request->input('disc'),
-        'location' => $request->input('location'),
-        'image' => $newFilePath,
-    ]);
+        return response()->json(['animal' => $animal, 'message' => 'Animal created successfully']);
+    } else {
+        return response()->json(['error' => 'User not authenticated'], 401);
+    }
 
-    return response()->json(['animal' => $animal, 'message' => 'Animal created successfully']);
+    // $image = $request->file('image');
+    // $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+    // $customFolder = 'animals_images';
+
+    // $image->move(public_path($customFolder), $imageName);
+
+    // $newFilePath = "{$customFolder}/{$imageName}";
+
+    // $animal = Animal::create([
+    //     'name' => $request->input('name'),
+    //     'age' => $request->input('age'),
+    //     'animel_type' => $request->input('animel_type'),
+    //     'gender' => $request->input('gender'),
+    //     'disc' => $request->input('disc'),
+    //     'location' => $request->input('location'),
+    //     'image' => $newFilePath,
+    //     'user_id' => auth()->user()->id,
+    // ]);
+
+    // return response()->json(['animal' => $animal, 'message' => 'Animal created successfully']);
+    
+
+    
 }
 
     public function All_animals()
@@ -53,6 +83,12 @@ class AnimalController extends Controller
         return response()->json(['animals' => $animals]);
 
     }
+
+    public function user_animals()
+{
+    $userAnimals = auth()->user()->animals;
+    return response()->json(['animals' => $userAnimals]);
+}
 
     public function getAnimalById($id)
     {
@@ -78,8 +114,7 @@ class AnimalController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $animal = Animal::findOrFail($id);
-
+        $animal = auth()->user()->animals()->findOrFail($id);
         $request->validate([
             'name'=>'nullable|string|max:25',
         'age'=>'required|integer|max:25',
@@ -107,8 +142,7 @@ class AnimalController extends Controller
     }
 
     public function destroy($id)
-    {
-        $animal = Animal::findOrFail($id);
+    {  $animal = auth()->user()->animals()->findOrFail($id);
         $animal->delete();
         return response()->json(['message' => 'Animal deleted successfully']);
     }
