@@ -10,6 +10,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -60,6 +61,7 @@ Route::post('register',[ApiAuthController::class,'register']);
 Route::get('allUsers',[ApiAuthController::class,'allUsers']);
 
 Route::post('login',[ApiAuthController::class,'login']);
+Route::get('user', [ApiAuthController::class, 'getUser']);
 // Route::get('login',[ApiAuthController::class,'login']);
 
 
@@ -126,6 +128,8 @@ Route::controller(ClinicController::class)->prefix('/clinics')->group(function()
     Route::get('/{id}', 'show');
 });
 
+Route::middleware('auth:api')->group(function(){
+
 Route::controller(AnimalController::class)->prefix('/animals')->group(function(){
 Route::post('/', 'create');
 Route::get('/user', 'user_animals');
@@ -134,13 +138,12 @@ Route::get('/{animel_type?}','By_Name');
 Route::put('/{id}','update');
 Route::delete('/{id}', 'destroy');
 });
-
+});
 
 
 
 Route::get('/animals/new/{id}', [AnimalController::class, 'getAnimalById']);
 Route::get('/animals', [AnimalController::class, 'All_animals']);
-
 
 
 Route::controller(PostController::class)->prefix('/posts')->group(function(){
@@ -149,10 +152,8 @@ Route::controller(PostController::class)->prefix('/posts')->group(function(){
     Route::get('/{id}', 'show');
     Route::post('/', 'store');
     Route::delete('/{id}', 'destroy');
-
-
 });
 
 
-Route::get('/posts/{postId}/comments', [CommentControll::class,'index']);
-Route::post('/posts/{postId}/comments', [CommentController::class,'store']);
+Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
+Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);

@@ -80,6 +80,7 @@ class AnimalController extends Controller
     public function All_animals()
     {
         $animals = Animal::all();
+        
         return response()->json(['animals' => $animals]);
 
     }

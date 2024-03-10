@@ -147,7 +147,6 @@ public function allUsers()
     {
       
         $user = auth('api')->user();
-        dd($user);
         return response()->json($user);
     }
 
