@@ -9,7 +9,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\ApiProudctController;
-
+use App\Http\Controllers\ApiCategoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,7 +57,7 @@ Route::middleware('api.auth')->group(function(){
 //auth
 Route::post('register',[ApiAuthController::class,'register']);
 Route::get('allUsers',[ApiAuthController::class,'allUsers']);
-
+Route::get('user', [ApiAuthController::class, 'getUser']);
 Route::post('login',[ApiAuthController::class,'login']);
 
 

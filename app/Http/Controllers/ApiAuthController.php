@@ -141,7 +141,13 @@ public function allUsers()
         $users = User::all();
         return response()->json(['users' => $users], 200);
     }
-
+    public function getUser()
+    {
+      
+        $user = auth('api')->user();
+        // dd($user);
+        return response()->json($user);
+    }
 
 public function logout(Request $request){
     Auth::guard('api')->logout();
