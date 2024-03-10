@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::get('user', [ApiAuthController::class, 'getUser']);
 
 
 
@@ -60,6 +61,8 @@ Route::post('register',[ApiAuthController::class,'register']);
 Route::get('allUsers',[ApiAuthController::class,'allUsers']);
 
 Route::post('login',[ApiAuthController::class,'login']);
+// Route::get('login',[ApiAuthController::class,'login']);
+
 
 
 //get all categories api
