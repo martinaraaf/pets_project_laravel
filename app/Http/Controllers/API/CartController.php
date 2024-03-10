@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiAuthController;
 
 
 
@@ -47,15 +48,22 @@ class CartController extends Controller
         DB::transaction(function() use ($request, &$cart){
             $product = Proudct::find($request->product_id);
 
+            // dd($request);
             if ($product->stock_number < $request->quantity) {
                 return response()->json(['message' => 'Insufficient product stock'], 422);
             }
-            // $access_token=$request->header("access_token");
-            // $user = Auth::user;
-            $user = $request->user_id;
-            // if($access_token !==null){
-            //     $user=User::where("access_token","=",$access_token)->first();
-            // }
+            $access_token=$request->header("access_token");
+           
+            // $user = auth('api')->user();
+            // $user = $request->user_id;
+            if($access_token !==null){
+                    $user=User::where("access_token","=",$access_token)->first();
+                }
+            // $authController = new ApiAuthController();
+            // $user = $authController->getUser();
+            // dd($authController->getUser());
+            // dd($user);
+
             $cart = Cart::firstOrCreate([
                 'user_id'=> $user,
                 'product_id'=>$request->product_id,
@@ -76,6 +84,7 @@ class CartController extends Controller
         return response()->json([
             'message' => 'Item added to cart successfully',
             'cart' => $cart,
+
         ]);
     }
 
